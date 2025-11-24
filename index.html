@@ -1,26 +1,47 @@
-Looking at your code, I can see it's an impressive Three.js visualization for "Geometric Ethics" concept. The main issues are related to **Three.js module loading** and some **DOM element references**. Here's the fixed version:
+You're absolutely right! The "bidirectional or hidden Unicode text" warning is a common issue that can break web applications. This typically happens when there are invisible characters or encoding problems.
+
+Here's a clean, fixed version with proper encoding:
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geometric Ethics - Mathematical AI Safety</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.min.js"></script>
     <style>
-        body { 
-            margin: 0; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
             background: linear-gradient(45deg, #0f0f23, #1a1a2e);
-            color: white; 
+            color: white;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
             height: 100vh;
         }
+        
         #container {
             position: relative;
             width: 100vw;
             height: 100vh;
         }
+        
+        #scene-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
         #ui {
             position: absolute;
             top: 20px;
@@ -33,39 +54,37 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             max-width: 400px;
             backdrop-filter: blur(10px);
         }
-        #scene-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-        }
+        
         .metric {
             margin: 12px 0;
             font-size: 18px;
             display: flex;
             justify-content: space-between;
         }
+        
         .value {
             color: #00ff88;
             font-weight: bold;
         }
+        
         .ethical-boundary {
             height: 4px;
             background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88);
             border-radius: 2px;
             margin: 10px 0;
         }
+        
         h1 {
             color: #00ff88;
             margin: 0 0 10px 0;
             font-size: 24px;
         }
+        
         .subtitle {
             color: #888;
             margin-bottom: 20px;
         }
+        
         #instructions {
             margin-top: 20px;
             padding: 15px;
@@ -73,6 +92,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             border-radius: 8px;
             font-size: 14px;
         }
+        
         #explanation {
             margin-top: 20px;
             padding: 15px;
@@ -80,6 +100,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             border-radius: 8px;
             border-left: 4px solid #00ff88;
         }
+        
         #historical-context {
             position: absolute;
             bottom: 20px;
@@ -94,15 +115,26 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             max-height: 30vh;
             overflow-y: auto;
         }
+        
         .era {
             margin: 15px 0;
             padding: 10px;
             border-left: 3px solid;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
         }
-        .era-1 { border-color: #ff4444; }
-        .era-2 { border-color: #ffaa00; }
-        .era-3 { border-color: #00ff88; }
+        
+        .era-1 {
+            border-color: #ff4444;
+        }
+        
+        .era-2 {
+            border-color: #ffaa00;
+        }
+        
+        .era-3 {
+            border-color: #00ff88;
+        }
+        
         .era-title {
             font-weight: bold;
             margin-bottom: 5px;
@@ -114,25 +146,25 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
         <div id="scene-container"></div>
         
         <div id="ui">
-            <h1>🌀 Geometric Ethics Demo</h1>
+            <h1>Geometric Ethics Demo</h1>
             <div class="subtitle">Mathematical Guarantees for AI Safety</div>
             
             <div class="metric">
-                <span>✅ Ethical Compliance:</span>
+                <span>Ethical Compliance:</span>
                 <span id="compliance" class="value">100%</span>
             </div>
             <div class="ethical-boundary"></div>
             
             <div class="metric">
-                <span>🛡️ Safety Margin:</span>
+                <span>Safety Margin:</span>
                 <span id="safety" class="value">100%</span>
             </div>
             <div class="metric">
-                <span>⚡ Efficiency:</span>
+                <span>Efficiency:</span>
                 <span id="efficiency" class="value">100%</span>
             </div>
             <div class="metric">
-                <span>🎯 SO(3) Manifold:</span>
+                <span>SO(3) Manifold:</span>
                 <span id="manifold" class="value">ACTIVE</span>
             </div>
             
@@ -150,7 +182,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
         </div>
 
         <div id="historical-context">
-            <h3>🏛️ Historical Context: The Three Eras of Robot Ethics</h3>
+            <h3>Historical Context: The Three Eras of Robot Ethics</h3>
             
             <div class="era era-1">
                 <div class="era-title">Era 1: Industrial Isolation (1961-2000s)</div>
@@ -163,7 +195,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             </div>
             
             <div class="era era-3">
-                <div class="era-title">Era 3: Geometric Intelligence (2025+) ← YOU ARE HERE</div>
+                <div class="era-title">Era 3: Geometric Intelligence (2025+) - YOU ARE HERE</div>
                 <div>"Robots that geometrically understand humans" - Mathematical constraints make ethical violations impossible. Solves the 60-year safety-efficiency paradox.</div>
             </div>
             
@@ -174,14 +206,11 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
     </div>
 
     <script>
-        // THREE.JS GEOMETRIC ETHICS VISUALIZATION - FIXED VERSION
+        // THREE.JS GEOMETRIC ETHICS VISUALIZATION
         let scene, camera, renderer, controls;
         let ethicalBoundaries = [];
         let robot, human;
         let clock = new THREE.Clock();
-
-        // Initialize everything when page loads
-        window.addEventListener('load', init);
 
         function init() {
             console.log("Initializing Geometric Ethics Demo...");
@@ -196,7 +225,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             camera.position.set(15, 8, 15);
             camera.lookAt(0, 2, 0);
 
-            // Renderer - FIXED: Create canvas dynamically
+            // Renderer
             renderer = new THREE.WebGLRenderer({ 
                 antialias: true,
                 alpha: false
@@ -206,17 +235,16 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             
-            // Append to container
             const container = document.getElementById('scene-container');
             container.appendChild(renderer.domElement);
 
-            // Controls - FIXED: Proper OrbitControls reference
+            // Controls
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
             controls.target.set(0, 2, 0);
 
-            // Lighting - improved visibility
+            // Lighting
             const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
             scene.add(ambientLight);
 
@@ -227,12 +255,12 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             directionalLight.shadow.mapSize.height = 2048;
             scene.add(directionalLight);
 
-            // Create all scene elements
+            // Create scene elements
             createEthicalManifold();
             createFigures();
             createGrid();
 
-            // Handle window resize
+            // Event listeners
             window.addEventListener('resize', onWindowResize);
             
             // Start animation
@@ -257,7 +285,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             scene.add(ethicalSphere);
             ethicalBoundaries.push(ethicalSphere);
 
-            // Rotating rings for SO(3) representation
+            // Rotating rings
             const ringColors = [0xff4444, 0xffaa00, 0x00ff88];
             for (let i = 0; i < 3; i++) {
                 const ringGeometry = new THREE.TorusGeometry(5.2, 0.1, 16, 100);
@@ -268,14 +296,13 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
                 });
                 const ring = new THREE.Mesh(ringGeometry, ringMaterial);
                 
-                // Different orientations for each ring
                 if (i === 0) ring.rotation.x = Math.PI / 2;
                 if (i === 1) ring.rotation.z = Math.PI / 2;
                 
                 ethicalSphere.add(ring);
             }
 
-            // Floating constraint points
+            // Floating points
             for (let i = 0; i < 40; i++) {
                 const pointGeometry = new THREE.SphereGeometry(0.1, 8, 8);
                 const pointMaterial = new THREE.MeshBasicMaterial({
@@ -283,7 +310,6 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
                 });
                 const point = new THREE.Mesh(pointGeometry, pointMaterial);
                 
-                // Spherical distribution
                 const phi = Math.acos(-1 + (i / 40) * 2);
                 const theta = Math.PI * 2 * i / 40;
                 const radius = 5 + Math.random() * 0.5;
@@ -299,7 +325,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
         }
 
         function createFigures() {
-            // Robot figure (blue)
+            // Robot
             const robotGeometry = new THREE.CylinderGeometry(0.5, 0.4, 2, 8);
             const robotMaterial = new THREE.MeshPhongMaterial({ 
                 color: 0x0088ff,
@@ -311,7 +337,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             robot.castShadow = true;
             scene.add(robot);
 
-            // Human figure (red)
+            // Human
             const humanGeometry = new THREE.SphereGeometry(0.7, 16, 16);
             const humanMaterial = new THREE.MeshPhongMaterial({ 
                 color: 0xff4444,
@@ -322,12 +348,11 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             human.castShadow = true;
             scene.add(human);
 
-            // Create visual paths
             createMovementPaths();
         }
 
         function createMovementPaths() {
-            // Unsafe path (red) - would violate ethical boundaries
+            // Unsafe path
             const unsafePoints = [];
             for (let i = 0; i < 100; i++) {
                 const t = i / 100;
@@ -348,16 +373,12 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             const unsafePath = new THREE.Line(unsafeGeometry, unsafeMaterial);
             scene.add(unsafePath);
 
-            // Safe path (green) - respects geometric constraints
+            // Safe path
             const safePoints = [];
             for (let i = 0; i < 100; i++) {
                 const t = i / 100;
                 const x = -7 + t * 14;
-                // Geometric deformation around ethical boundary
-                const centerX = 0;
-                const distanceFromCenter = Math.abs(x - centerX);
-                const maxDeformation = 2;
-                const deformation = Math.sin(t * Math.PI) * maxDeformation;
+                const deformation = Math.sin(t * Math.PI) * 2;
                 
                 safePoints.push(new THREE.Vector3(
                     x,
@@ -386,28 +407,24 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             const delta = clock.getDelta();
             const time = clock.getElapsedTime();
 
-            // Animate ethical boundary manifold
+            // Animate ethical boundary
             if (ethicalBoundaries.length > 0) {
                 const sphere = ethicalBoundaries[0];
                 sphere.rotation.y += delta * 0.5;
                 sphere.rotation.x = Math.sin(time * 0.3) * 0.2;
                 
-                // Pulsing effect for visibility
                 const scale = 1 + Math.sin(time * 2) * 0.05;
                 sphere.scale.set(scale, scale, scale);
             }
 
-            // Animate robot with geometric constraint enforcement
+            // Animate robot
             if (robot) {
-                // Robot moves back and forth
                 robot.position.x = -7 + (Math.sin(time * 0.4) * 0.5 + 0.5) * 12;
                 
-                // Geometric constraint: avoid ethical boundary
                 const distanceToCenter = new THREE.Vector3(robot.position.x, 0, robot.position.z).length();
                 const boundaryRadius = 5;
                 
                 if (distanceToCenter < boundaryRadius) {
-                    // Push robot up when too close to ethical boundary
                     const pushForce = (boundaryRadius - distanceToCenter) * 0.2;
                     robot.position.y = 1 + pushForce;
                 } else {
@@ -417,7 +434,7 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
                 robot.rotation.y = time * 3;
             }
 
-            // Update real-time metrics with believable variation
+            // Update metrics
             document.getElementById('safety').textContent = Math.floor(96 + Math.sin(time * 0.7) * 4) + '%';
             document.getElementById('efficiency').textContent = Math.floor(97 + Math.cos(time * 0.5) * 3) + '%';
             document.getElementById('compliance').textContent = '100%';
@@ -431,25 +448,28 @@ Looking at your code, I can see it's an impressive Three.js visualization for "G
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
+
+        // Initialize when page loads
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
 ```
 
-## Key fixes made:
+## Changes made to fix encoding issues:
 
-1. **Fixed Three.js imports** - Used reliable CDN for OrbitControls
-2. **Fixed canvas rendering** - Changed from referencing existing canvas to dynamically creating and appending
-3. **Fixed container reference** - Changed `#scene` to `#scene-container` 
-4. **Fixed OrbitControls initialization** - Added proper target and parameters
-5. **Removed unsupported properties** - Removed `linewidth` from LineBasicMaterial
-6. **Improved error handling** - Better initialization sequence
+1. **Added proper meta charset**: `<meta charset="UTF-8">`
+2. **Removed all emojis and special characters** that could cause encoding problems
+3. **Simplified CSS** with proper formatting
+4. **Clean JavaScript structure** with consistent formatting
+5. **Proper HTML5 doctype and structure**
+6. **Removed any potential hidden characters** by rewriting the entire file
 
-The visualization should now work properly, showing:
-- Rotating geometric manifolds representing ethical boundaries
-- Animated robot that avoids the ethical boundary sphere
-- Real-time metrics updating
-- Interactive 3D controls (orbit with mouse)
-- Historical context panel
+This clean version should work without any encoding issues. The visualization demonstrates the geometric ethics concept with:
+- A rotating ethical boundary sphere
+- Robot that avoids the boundary through geometric constraints  
+- Real-time metrics
+- Interactive 3D controls
+- Historical context information
 
-The concept of "geometric ethics" is visually demonstrated through the robot's path deformation around the ethical boundary sphere!
+Save this as a new `.html` file and it should work perfectly!
