@@ -5,377 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maths & Ethics - Algorithmic Fairness</title>
     
-    <!-- Three.js -->
+    <!-- Three.js - CORRECT VERSIONS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            margin: 0;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            margin: 0; 
             background: linear-gradient(135deg, #0a0a1a, #1a1a3a);
-            color: #e0e0e0;
+            color: #e0e0e0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
         }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        h1 { color: #00ff88; font-size: 2.5em; margin-bottom: 10px; }
+        .demo-section { background: rgba(0,0,0,0.7); padding: 30px; margin-bottom: 30px; border-radius: 15px; }
+        #visualization-container { width: 100%; height: 600px; background: #0a0a1a; border-radius: 10px; position: relative; overflow: hidden; }
+        #scene-container { width: 100%; height: 100%; }
+        .controls-ui { position: absolute; top: 20px; left: 20px; background: rgba(10,15,30,0.9); padding: 20px; border-radius: 10px; border: 1px solid #00ff88; max-width: 300px; }
+        .metric { margin: 10px 0; display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.05); border-radius: 8px; }
+        .value { color: #00ff88; font-weight: bold; }
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #00ff88; background: rgba(10,15,30,0.9); padding: 20px 30px; border-radius: 10px; border: 1px solid #00ff88; }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border: 1px solid #00ff88;
-        }
-        
-        h1 {
-            color: #00ff88;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            color: #a0a0c0;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        
-        .demo-section {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid #333;
-        }
-        
-        #visualization-container {
-            position: relative;
-            width: 100%;
-            height: 600px;
-            background: #0a0a1a;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-        
-        #scene-container {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .controls-ui {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: rgba(10, 15, 30, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #00ff88;
-            max-width: 300px;
-        }
-        
-        .metric {
-            margin: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-        }
-        
-        .value {
-            color: #00ff88;
-            font-weight: bold;
-        }
-        
-        .historical-context {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 40px;
-            border: 1px solid #ffaa00;
-        }
-        
-        .eras-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-        
-        .era {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 12px;
-            border-left: 5px solid;
-        }
-        
+        .historical-context { background: rgba(0,0,0,0.7); padding: 30px; margin-top: 40px; border-radius: 15px; border: 1px solid #ffaa00; }
+        .eras-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 20px; }
+        .era { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; border-left: 5px solid; }
         .era-1 { border-color: #ff4444; }
         .era-2 { border-color: #ffaa00; }
         .era-3 { border-color: #00ff88; border: 2px solid #00ff88; }
-        
-        .era-title {
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        
-        .current-badge {
-            background: #00ff88;
-            color: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.8em;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #00ff88;
-            font-size: 18px;
-            z-index: 1000;
-            background: rgba(10, 15, 30, 0.9);
-            padding: 20px 30px;
-            border-radius: 10px;
-            border: 1px solid #00ff88;
-        }
-        
-        @media (max-width: 768px) {
-            #visualization-container {
-                height: 400px;
-            }
-            .controls-ui {
-                position: relative;
-                max-width: none;
-                margin-bottom: 20px;
-            }
-            .eras-container {
-                grid-template-columns: 1fr;
-            }
-        }
+        .era-title { font-weight: bold; margin-bottom: 15px; font-size: 1.3em; }
+        .current-badge { background: #00ff88; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Maths & Ethics</h1>
-            <div class="subtitle">Exploring Algorithmic Fairness through Geometric Constraints</div>
+            <div class="subtitle">Geometric Constraints for Algorithmic Fairness</div>
         </header>
 
         <section class="demo-section">
             <h2>Interactive Demonstration</h2>
-            <p>Watch how geometric constraints make ethical violations mathematically impossible</p>
-            
             <div id="visualization-container">
                 <div id="loading">Loading Geometric Ethics Visualization...</div>
                 <div id="scene-container"></div>
                 <div class="controls-ui">
-                    <h3>Geometric Ethics Monitor</h3>
-                    <div class="metric">
-                        <span>Ethical Compliance:</span>
-                        <span id="compliance" class="value">100%</span>
-                    </div>
-                    <div class="metric">
-                        <span>Safety Margin:</span>
-                        <span id="safety" class="value">100%</span>
-                    </div>
-                    <div class="metric">
-                        <span>System Efficiency:</span>
-                        <span id="efficiency" class="value">100%</span>
-                    </div>
+                    <h3>Ethics Monitor</h3>
+                    <div class="metric"><span>Ethical Compliance:</span><span id="compliance" class="value">100%</span></div>
+                    <div class="metric"><span>Safety Margin:</span><span id="safety" class="value">100%</span></div>
+                    <div class="metric"><span>Efficiency:</span><span id="efficiency" class="value">100%</span></div>
                 </div>
             </div>
         </section>
 
         <section class="historical-context">
-            <h2>Historical Context: The Three Eras of Robot Ethics</h2>
-            
+            <h2>Three Eras of Robot Ethics</h2>
             <div class="eras-container">
-                <div class="era era-1">
-                    <div class="era-title">Era 1: Industrial Isolation</div>
-                    <div class="era-period">1961-2000s</div>
-                    <div class="era-description">
-                        "Keep humans and robots separated" - Physical barriers and cages were the primary safety measure.
-                    </div>
-                </div>
-                
-                <div class="era era-2">
-                    <div class="era-title">Era 2: Collaborative Coexistence</div>
-                    <div class="era-period">2008-2024</div>
-                    <div class="era-description">
-                        "Make robots safe enough to work near humans" - Force-limiting and collision detection.
-                    </div>
-                </div>
-                
-                <div class="era era-3">
-                    <div class="current-badge">YOU ARE HERE</div>
-                    <div class="era-title">Era 3: Geometric Intelligence</div>
-                    <div class="era-period">2025+</div>
-                    <div class="era-description">
-                        "Robots that geometrically understand humans" - Mathematical constraints make ethical violations impossible.
-                    </div>
-                </div>
+                <div class="era era-1"><div class="era-title">Era 1: Industrial Isolation</div><div>1961-2000s - Physical barriers and cages</div></div>
+                <div class="era era-2"><div class="era-title">Era 2: Collaborative Coexistence</div><div>2008-2024 - Force-limiting and detection</div></div>
+                <div class="era era-3"><div class="current-badge">YOU ARE HERE</div><div class="era-title">Era 3: Geometric Intelligence</div><div>2025+ - Mathematical constraints prevent violations</div></div>
             </div>
         </section>
     </div>
 
     <script>
-        // SIMPLE & RELIABLE GEOMETRIC ETHICS VISUALIZATION
+        // SIMPLE & RELIABLE VISUALIZATION - ALL IN ONE FILE
         let scene, camera, renderer, controls;
-        let ethicalBoundaries = [];
         let robot, human;
-        let clock = new THREE.Clock();
 
         function init() {
-            console.log("🚀 Initializing Visualization...");
+            console.log("Starting Geometric Ethics Visualization...");
             
             try {
-                // Scene setup
+                // Basic setup
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x0a0a1a);
-
-                // Camera
+                
                 const container = document.getElementById('visualization-container');
                 camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
                 camera.position.set(15, 8, 15);
-                camera.lookAt(0, 2, 0);
-
-                // Renderer
+                
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setSize(container.clientWidth, container.clientHeight);
-                renderer.shadowMap.enabled = true;
-                
                 document.getElementById('scene-container').appendChild(renderer.domElement);
-
+                
                 // Controls
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 controls.enableDamping = true;
-
-                // Lighting
-                const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-                scene.add(ambientLight);
-
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-                directionalLight.position.set(20, 30, 10);
-                directionalLight.castShadow = true;
-                scene.add(directionalLight);
-
-                // Create elements
-                createEthicalManifold();
-                createFigures();
-                createGrid();
-
-                // Hide loading
-                document.getElementById('loading').style.display = 'none';
                 
-                // Start animation
+                // Lighting
+                scene.add(new THREE.AmbientLight(0x404040, 0.6));
+                const light = new THREE.DirectionalLight(0xffffff, 1);
+                light.position.set(20, 30, 10);
+                scene.add(light);
+                
+                // Create scene
+                createScene();
+                
+                // Hide loading and start animation
+                document.getElementById('loading').style.display = 'none';
                 animate();
                 
             } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('loading').innerHTML = 'Error loading visualization';
+                console.error("Init error:", error);
+                document.getElementById('loading').innerHTML = "Error: " + error.message;
             }
         }
 
-        function createEthicalManifold() {
-            const geometry = new THREE.SphereGeometry(5, 32, 32);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0x00ff88,
-                transparent: true,
-                opacity: 0.15,
-                wireframe: true
-            });
-
-            const ethicalSphere = new THREE.Mesh(geometry, material);
-            ethicalSphere.position.set(0, 3, 0);
-            scene.add(ethicalSphere);
-            ethicalBoundaries.push(ethicalSphere);
-        }
-
-        function createFigures() {
+        function createScene() {
+            // Ethical boundary
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(5, 32, 32),
+                new THREE.MeshPhongMaterial({ color: 0x00ff88, transparent: true, opacity: 0.15, wireframe: true })
+            );
+            sphere.position.set(0, 3, 0);
+            scene.add(sphere);
+            
             // Robot
-            const robotGeometry = new THREE.CylinderGeometry(0.5, 0.4, 2, 8);
-            const robotMaterial = new THREE.MeshPhongMaterial({ color: 0x0088ff });
-            robot = new THREE.Mesh(robotGeometry, robotMaterial);
+            robot = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.5, 0.4, 2, 8),
+                new THREE.MeshPhongMaterial({ color: 0x0088ff })
+            );
             robot.position.set(-7, 1, 0);
             scene.add(robot);
-
+            
             // Human
-            const humanGeometry = new THREE.SphereGeometry(0.7, 16, 16);
-            const humanMaterial = new THREE.MeshPhongMaterial({ color: 0xff4444 });
-            human = new THREE.Mesh(humanGeometry, humanMaterial);
+            human = new THREE.Mesh(
+                new THREE.SphereGeometry(0.7, 16, 16),
+                new THREE.MeshPhongMaterial({ color: 0xff4444 })
+            );
             human.position.set(7, 0.7, 0);
             scene.add(human);
-        }
-
-        function createGrid() {
-            const gridHelper = new THREE.GridHelper(25, 25, 0x444444, 0x222222);
-            gridHelper.position.y = -0.1;
-            scene.add(gridHelper);
+            
+            // Grid
+            const grid = new THREE.GridHelper(25, 25, 0x444444, 0x222222);
+            grid.position.y = -0.1;
+            scene.add(grid);
         }
 
         function animate() {
             requestAnimationFrame(animate);
+            const time = Date.now() * 0.001;
             
-            const time = clock.getElapsedTime();
-
-            // Animate boundary
-            if (ethicalBoundaries.length > 0) {
-                ethicalBoundaries[0].rotation.y += 0.01;
-            }
-
-            // Animate robot with constraints
+            // Animate robot with geometric constraints
             if (robot) {
                 robot.position.x = -7 + (Math.sin(time * 0.4) * 0.5 + 0.5) * 14;
-                
-                // Geometric constraint
-                const distanceToCenter = Math.sqrt(robot.position.x * robot.position.x);
-                if (distanceToCenter < 5) {
-                    robot.position.y = 1 + (5 - distanceToCenter) * 0.2;
-                } else {
-                    robot.position.y = 1;
-                }
-                
+                const dist = Math.abs(robot.position.x);
+                robot.position.y = dist < 5 ? 1 + (5 - dist) * 0.2 : 1;
                 robot.rotation.y = time * 3;
-
-                // Update metrics
+                
+                // Update UI
                 document.getElementById('safety').textContent = (95 + Math.sin(time) * 3).toFixed(1) + '%';
                 document.getElementById('efficiency').textContent = (97 + Math.cos(time) * 2).toFixed(1) + '%';
             }
-
+            
             controls.update();
             renderer.render(scene, camera);
         }
 
-        function onWindowResize() {
+        // Start everything
+        window.addEventListener('load', init);
+        window.addEventListener('resize', function() {
             const container = document.getElementById('visualization-container');
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
-        }
-
-        // Initialize
-        window.addEventListener('load', init);
-        window.addEventListener('resize', onWindowResize);
+        });
     </script>
 </body>
 </html>
