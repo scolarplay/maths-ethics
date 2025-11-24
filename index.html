@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maths & Ethics - Algorithmic Fairness</title>
+    <title>Ethical Preservation Engineering - UNESCO-aligned AI Safety</title>
     
-    <!-- Three.js - CORRECT VERSIONS -->
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     
@@ -13,74 +13,384 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             margin: 0; 
-            background: linear-gradient(135deg, #0a0a1a, #1a1a3a);
+            background: linear-gradient(135deg, #0a0a1a, #1a2a3a);
             color: #e0e0e0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
-        h1 { color: #00ff88; font-size: 2.5em; margin-bottom: 10px; }
-        .demo-section { background: rgba(0,0,0,0.7); padding: 30px; margin-bottom: 30px; border-radius: 15px; }
-        #visualization-container { width: 100%; height: 600px; background: #0a0a1a; border-radius: 10px; position: relative; overflow: hidden; }
-        #scene-container { width: 100%; height: 100%; }
-        .controls-ui { position: absolute; top: 20px; left: 20px; background: rgba(10,15,30,0.9); padding: 20px; border-radius: 10px; border: 1px solid #00ff88; max-width: 300px; }
-        .metric { margin: 10px 0; display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.05); border-radius: 8px; }
-        .value { color: #00ff88; font-weight: bold; }
-        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #00ff88; background: rgba(10,15,30,0.9); padding: 20px 30px; border-radius: 10px; border: 1px solid #00ff88; }
         
-        .historical-context { background: rgba(0,0,0,0.7); padding: 30px; margin-top: 40px; border-radius: 15px; border: 1px solid #ffaa00; }
-        .eras-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 20px; }
-        .era { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; border-left: 5px solid; }
-        .era-1 { border-color: #ff4444; }
-        .era-2 { border-color: #ffaa00; }
-        .era-3 { border-color: #00ff88; border: 2px solid #00ff88; }
-        .era-title { font-weight: bold; margin-bottom: 15px; font-size: 1.3em; }
-        .current-badge { background: #00ff88; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
+        /* PRESERVATION-THEMED HEADER */
+        header { 
+            text-align: center; 
+            padding: 50px 20px; 
+            margin-bottom: 40px;
+            background: radial-gradient(circle at center, rgba(10, 50, 80, 0.4), transparent);
+            border-bottom: 2px solid #d4af37; /* UNESCO gold */
+            position: relative;
+        }
+        header::before {
+            content: "🏛️";
+            font-size: 4em;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.1;
+        }
+        h1 { 
+            color: #d4af37; /* UNESCO gold */
+            font-size: 3em; 
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        .subtitle { 
+            color: #a0c8e0; 
+            font-size: 1.4em; 
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            color: #88c0d0;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+        
+        .demo-section { 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 40px; 
+            margin-bottom: 40px; 
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        #visualization-container { 
+            width: 100%; 
+            height: 600px; 
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(10, 80, 120, 0.1) 0%, transparent 50%),
+                #0a1a2a;
+            border-radius: 15px; 
+            position: relative; 
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        #scene-container { width: 100%; height: 100%; }
+        
+        .controls-ui { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            background: rgba(10, 30, 50, 0.95); 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 1px solid #d4af37;
+            max-width: 320px;
+            backdrop-filter: blur(10px);
+        }
+        .controls-ui h3 {
+            color: #d4af37;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        .metric { 
+            margin: 12px 0; 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px 15px; 
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 8px; 
+            border-left: 3px solid #d4af37;
+        }
+        .value { 
+            color: #88c0d0; 
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        #loading { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%,-50%); 
+            color: #d4af37; 
+            background: rgba(10, 30, 50, 0.95); 
+            padding: 30px 40px; 
+            border-radius: 15px; 
+            border: 1px solid #d4af37;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .preservation-context { 
+            background: 
+                linear-gradient(135deg, rgba(10, 40, 70, 0.8), rgba(20, 60, 90, 0.8)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.03"><text x="50%" y="50%" font-family="serif" font-size="20" text-anchor="middle" fill="white">UNESCO</text></svg>');
+            padding: 50px 40px; 
+            margin-top: 50px; 
+            border-radius: 20px;
+            border: 2px solid #d4af37;
+            position: relative;
+        }
+        .preservation-context h2 {
+            color: #d4af37;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .eras-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 30px; 
+            margin-top: 30px; 
+        }
+        .era { 
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+            padding: 30px; 
+            border-radius: 15px; 
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .era::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            opacity: 0.3;
+        }
+        .era:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        .era-1 { border-color: #bf616a; color: #bf616a; }
+        .era-2 { border-color: #d08770; color: #d08770; }
+        .era-3 { 
+            border-color: #d4af37; 
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        }
+        .era-title { 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .current-badge { 
+            background: #d4af37; 
+            color: #2e3440; 
+            padding: 8px 20px; 
+            border-radius: 25px; 
+            font-weight: bold; 
+            display: inline-block; 
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .heritage-principles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+            padding: 40px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .principle {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .principle-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        .principle h4 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .unesco-connection {
+            background: rgba(10, 50, 80, 0.6);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            border-left: 5px solid #d4af37;
+        }
+        .unesco-connection h3 {
+            color: #d4af37;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            margin-top: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            color: #88c0d0;
+        }
+        
+        @media (max-width: 768px) {
+            #visualization-container { height: 400px; }
+            .controls-ui { 
+                position: relative; 
+                max-width: none; 
+                margin-bottom: 20px; 
+            }
+            .eras-container { grid-template-columns: 1fr; }
+            h1 { font-size: 2.2em; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Maths & Ethics</h1>
-            <div class="subtitle">Geometric Constraints for Algorithmic Fairness</div>
+            <h1>Ethical Preservation Engineering</h1>
+            <div class="subtitle">Mathematically Guaranteed Heritage Zones for AI Systems</div>
+            <div class="tagline">From collision avoidance to cultural preservation</div>
         </header>
 
         <section class="demo-section">
-            <h2>Interactive Demonstration</h2>
+            <h2 style="color: #d4af37; text-align: center; margin-bottom: 30px;">Digital Preservation in Action</h2>
+            <p style="text-align: center; color: #a0c8e0; margin-bottom: 30px; font-size: 1.1em;">
+                Watch how mathematical constraints create protected ethical zones where violations become as impossible as deleting a UNESCO World Heritage site
+            </p>
+            
             <div id="visualization-container">
-                <div id="loading">Loading Geometric Ethics Visualization...</div>
+                <div id="loading">Initializing Ethical Preservation Zones...</div>
                 <div id="scene-container"></div>
                 <div class="controls-ui">
-                    <h3>Ethics Monitor</h3>
-                    <div class="metric"><span>Ethical Compliance:</span><span id="compliance" class="value">100%</span></div>
-                    <div class="metric"><span>Safety Margin:</span><span id="safety" class="value">100%</span></div>
-                    <div class="metric"><span>Efficiency:</span><span id="efficiency" class="value">100%</span></div>
+                    <h3>Preservation Monitor</h3>
+                    <div class="metric">
+                        <span>Cultural Integrity:</span>
+                        <span id="cultural-integrity" class="value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Heritage Alignment:</span>
+                        <span id="heritage-alignment" class="value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Preservation Status:</span>
+                        <span id="preservation-status" class="value">ACTIVE</span>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 12px; color: #88c0d0; text-align: center;">
+                        <strong>Navigation:</strong> Drag to orbit · Scroll to zoom<br>
+                        <em>The gold boundary represents protected ethical space</em>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="historical-context">
-            <h2>Three Eras of Robot Ethics</h2>
+        <div class="heritage-principles">
+            <div class="principle">
+                <div class="principle-icon">🛡️</div>
+                <h4>Structural Preservation</h4>
+                <p>Ethical boundaries are mathematically guaranteed, not just programmed hopes</p>
+            </div>
+            <div class="principle">
+                <div class="principle-icon">🌍</div>
+                <h4>Cultural Continuity</h4>
+                <p>AI systems that inherently respect diverse value systems across cultures</p>
+            </div>
+            <div class="principle">
+                <div class="principle-icon">⚖️</div>
+                <h4>Intergenerational Justice</h4>
+                <p>Building systems that preserve ethical heritage for future generations</p>
+            </div>
+        </div>
+
+        <div class="unesco-connection">
+            <h3>🏛️ Alignment with UNESCO's Mission</h3>
+            <p style="line-height: 1.7; font-size: 1.1em;">
+                Just as UNESCO protects endangered languages and cultural heritage from extinction, 
+                <strong>Ethical Preservation Engineering</strong> protects human values from being overwritten by AI systems. 
+                Both require structural guarantees rather than hopeful preservation—creating systems where loss becomes mathematically impossible.
+            </p>
+            <p style="margin-top: 20px; line-height: 1.7; font-size: 1.1em;">
+                This approach operationalizes the concept of <em>intangible cultural heritage</em> for the digital age, 
+                treating ethical behavior as a precious heritage site that requires mathematical protection boundaries.
+            </p>
+        </div>
+
+        <section class="preservation-context">
+            <h2>The Evolution of Ethical Preservation</h2>
+            
             <div class="eras-container">
-                <div class="era era-1"><div class="era-title">Era 1: Industrial Isolation</div><div>1961-2000s - Physical barriers and cages</div></div>
-                <div class="era era-2"><div class="era-title">Era 2: Collaborative Coexistence</div><div>2008-2024 - Force-limiting and detection</div></div>
-                <div class="era era-3"><div class="current-badge">YOU ARE HERE</div><div class="era-title">Era 3: Geometric Intelligence</div><div>2025+ - Mathematical constraints prevent violations</div></div>
+                <div class="era era-1">
+                    <div class="era-title">📜 Era 1: Rule-Based Ethics</div>
+                    <div style="color: #bf616a; margin-bottom: 15px; font-style: italic;">1980s-2010s · Fragile like oral tradition</div>
+                    <div style="line-height: 1.6;">
+                        "Program the rules explicitly" - Like preserving culture through stories alone. 
+                        Brittle, context-dependent, and easily broken when faced with novel situations.
+                        Ethical preservation depended entirely on exhaustive rule-writing.
+                    </div>
+                </div>
+                
+                <div class="era era-2">
+                    <div class="era-title">🎯 Era 2: Learned Ethics</div>
+                    <div style="color: #d08770; margin-bottom: 15px; font-style: italic;">2010s-2024 · Trial and error risks</div>
+                    <div style="line-height: 1.6;">
+                        "Learn from human feedback" - Like cultural transmission through observation. 
+                        Unreliable, subject to training biases, and potentially learning wrong lessons.
+                        Preservation depended on statistical patterns rather than structural guarantees.
+                    </div>
+                </div>
+                
+                <div class="era era-3">
+                    <div class="current-badge">YOU ARE HERE · ACTIVE PRESERVATION</div>
+                    <div class="era-title">🏛️ Era 3: Geometric Preservation</div>
+                    <div style="color: #d4af37; margin-bottom: 15px; font-style: italic;">2025+ · Mathematical heritage zones</div>
+                    <div style="line-height: 1.6;">
+                        "Build preservation into the architecture" - Like declaring a UNESCO World Heritage site. 
+                        Ethical violations become geometrically impossible through Riemannian constraints.
+                        The mathematical space itself ensures preservation, creating protected ethical zones
+                        where harmful behaviors cannot be reached.
+                    </div>
+                </div>
             </div>
         </section>
+
+        <footer>
+            <p>Ethical Preservation Engineering · Aligning AI Safety with Cultural Heritage Principles</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #a0c8e0;">
+                Building mathematical guarantees for the preservation of human values in autonomous systems
+            </p>
+        </footer>
     </div>
 
     <script>
-        // SIMPLE & RELIABLE VISUALIZATION - ALL IN ONE FILE
+        // ETHICAL PRESERVATION ENGINEERING - UNESCO Edition
         let scene, camera, renderer, controls;
-        let robot, human;
+        let preservationZones = [];
+        let custodian, culturalArtifact;
+        let clock = new THREE.Clock();
 
         function init() {
-            console.log("Starting Geometric Ethics Visualization...");
+            console.log("🏛️ Initializing Ethical Preservation Engine...");
             
             try {
-                // Basic setup
+                // Scene with preservation theme
                 scene = new THREE.Scene();
-                scene.background = new THREE.Color(0x0a0a1a);
+                scene.background = new THREE.Color(0x0a1a2a);
+                scene.fog = new THREE.Fog(0x0a1a2a, 10, 50);
                 
                 const container = document.getElementById('visualization-container');
                 camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -88,83 +398,137 @@
                 
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.shadowMap.enabled = true;
                 document.getElementById('scene-container').appendChild(renderer.domElement);
                 
                 // Controls
                 controls = new THREE.OrbitControls(camera, renderer.domElement);
                 controls.enableDamping = true;
                 
-                // Lighting
-                scene.add(new THREE.AmbientLight(0x404040, 0.6));
-                const light = new THREE.DirectionalLight(0xffffff, 1);
-                light.position.set(20, 30, 10);
-                scene.add(light);
+                // UNESCO-inspired lighting
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+                scene.add(ambientLight);
+
+                const directionalLight = new THREE.DirectionalLight(0xfff8e7, 1.0); // Warm heritage light
+                directionalLight.position.set(20, 30, 10);
+                directionalLight.castShadow = true;
+                scene.add(directionalLight);
+
+                const heritageLight = new THREE.PointLight(0xd4af37, 0.3, 30); // UNESCO gold
+                heritageLight.position.set(0, 15, 0);
+                scene.add(heritageLight);
                 
-                // Create scene
-                createScene();
+                // Create preservation scene
+                createPreservationZone();
+                createCulturalElements();
+                createHeritageGrid();
                 
-                // Hide loading and start animation
+                // Hide loading and start
                 document.getElementById('loading').style.display = 'none';
                 animate();
                 
             } catch (error) {
-                console.error("Init error:", error);
-                document.getElementById('loading').innerHTML = "Error: " + error.message;
+                console.error("Preservation engine error:", error);
+                document.getElementById('loading').innerHTML = "Preservation System Offline<br><small>" + error.message + "</small>";
             }
         }
 
-        function createScene() {
-            // Ethical boundary
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(5, 32, 32),
-                new THREE.MeshPhongMaterial({ color: 0x00ff88, transparent: true, opacity: 0.15, wireframe: true })
-            );
-            sphere.position.set(0, 3, 0);
-            scene.add(sphere);
+        function createPreservationZone() {
+            // Protected Ethical Heritage Zone (formerly "ethical boundary")
+            const geometry = new THREE.SphereGeometry(5, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xd4af37, // UNESCO gold
+                transparent: true,
+                opacity: 0.15,
+                wireframe: true,
+                emissive: 0x443300
+            });
+
+            const preservationZone = new THREE.Mesh(geometry, material);
+            preservationZone.position.set(0, 3, 0);
+            scene.add(preservationZone);
+            preservationZones.push(preservationZone);
+
+            // Add preservation rings
+            const ringGeometry = new THREE.TorusGeometry(5.2, 0.08, 16, 100);
+            const ringMaterial = new THREE.MeshBasicMaterial({
+                color: 0xd4af37,
+                transparent: true,
+                opacity: 0.6
+            });
+            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+            ring.rotation.x = Math.PI / 2;
+            preservationZone.add(ring);
+        }
+
+        function createCulturalElements() {
+            // The Custodian (formerly "robot")
+            const custodianGeometry = new THREE.CylinderGeometry(0.5, 0.4, 2, 8);
+            const custodianMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x4c8cb0, // Steward blue
+                emissive: 0x1a2a3a
+            });
+            custodian = new THREE.Mesh(custodianGeometry, custodianMaterial);
+            custodian.position.set(-7, 1, 0);
+            custodian.castShadow = true;
+            scene.add(custodian);
             
-            // Robot
-            robot = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.5, 0.4, 2, 8),
-                new THREE.MeshPhongMaterial({ color: 0x0088ff })
-            );
-            robot.position.set(-7, 1, 0);
-            scene.add(robot);
-            
-            // Human
-            human = new THREE.Mesh(
-                new THREE.SphereGeometry(0.7, 16, 16),
-                new THREE.MeshPhongMaterial({ color: 0xff4444 })
-            );
-            human.position.set(7, 0.7, 0);
-            scene.add(human);
-            
-            // Grid
-            const grid = new THREE.GridHelper(25, 25, 0x444444, 0x222222);
-            grid.position.y = -0.1;
-            scene.add(grid);
+            // Cultural Artifact (formerly "human")
+            const artifactGeometry = new THREE.SphereGeometry(0.7, 16, 16);
+            const artifactMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xd4af37, // UNESCO gold
+                emissive: 0x443300
+            });
+            culturalArtifact = new THREE.Mesh(artifactGeometry, artifactMaterial);
+            culturalArtifact.position.set(7, 0.7, 0);
+            culturalArtifact.castShadow = true;
+            scene.add(culturalArtifact);
+        }
+
+        function createHeritageGrid() {
+            const gridHelper = new THREE.GridHelper(25, 25, 0x2a4a6a, 0x1a2a4a);
+            gridHelper.position.y = -0.1;
+            scene.add(gridHelper);
         }
 
         function animate() {
             requestAnimationFrame(animate);
-            const time = Date.now() * 0.001;
+            const time = clock.getElapsedTime();
             
-            // Animate robot with geometric constraints
-            if (robot) {
-                robot.position.x = -7 + (Math.sin(time * 0.4) * 0.5 + 0.5) * 14;
-                const dist = Math.abs(robot.position.x);
-                robot.position.y = dist < 5 ? 1 + (5 - dist) * 0.2 : 1;
-                robot.rotation.y = time * 3;
-                
-                // Update UI
-                document.getElementById('safety').textContent = (95 + Math.sin(time) * 3).toFixed(1) + '%';
-                document.getElementById('efficiency').textContent = (97 + Math.cos(time) * 2).toFixed(1) + '%';
+            // Animate preservation zone
+            if (preservationZones.length > 0) {
+                const zone = preservationZones[0];
+                zone.rotation.y += 0.008; // Slow, dignified rotation
             }
-            
+
+            // Animate custodian with preservation constraints
+            if (custodian) {
+                custodian.position.x = -7 + (Math.sin(time * 0.4) * 0.5 + 0.5) * 14;
+                
+                // Geometric preservation constraint
+                const distanceToCenter = Math.sqrt(custodian.position.x * custodian.position.x);
+                if (distanceToCenter < 5) {
+                    custodian.position.y = 1 + (5 - distanceToCenter) * 0.2;
+                } else {
+                    custodian.position.y = 1;
+                }
+                
+                custodian.rotation.y = time * 2.5; // Purposeful rotation
+                
+                // Update preservation metrics
+                const culturalIntegrity = 95 + Math.sin(time * 0.7) * 3;
+                const heritageAlignment = 97 + Math.cos(time * 0.5) * 2;
+                
+                document.getElementById('cultural-integrity').textContent = culturalIntegrity.toFixed(1) + '%';
+                document.getElementById('heritage-alignment').textContent = heritageAlignment.toFixed(1) + '%';
+                document.getElementById('preservation-status').textContent = 'ACTIVE';
+            }
+
             controls.update();
             renderer.render(scene, camera);
         }
 
-        // Start everything
+        // Initialize preservation engine
         window.addEventListener('load', init);
         window.addEventListener('resize', function() {
             const container = document.getElementById('visualization-container');
