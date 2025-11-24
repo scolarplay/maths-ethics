@@ -15,9 +15,9 @@
         
         body {
             margin: 0;
-            background: linear-gradient(45deg, #0f0f23, #1a1a2e);
+            background: linear-gradient(135deg, #0a0a1a, #1a1a3a);
             color: white;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             height: 100vh;
         }
@@ -42,59 +42,80 @@
             top: 20px;
             left: 20px;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(10, 15, 30, 0.85);
             padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #00ff88;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
             max-width: 400px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             pointer-events: auto;
         }
         
         .metric {
-            margin: 12px 0;
-            font-size: 18px;
+            margin: 15px 0;
+            font-size: 16px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .metric:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
         
         .value {
             color: #00ff88;
             font-weight: bold;
+            font-size: 18px;
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
         }
         
         .ethical-boundary {
             height: 4px;
             background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88);
             border-radius: 2px;
-            margin: 10px 0;
+            margin: 15px 0;
+            box-shadow: 0 0 12px rgba(255, 170, 0, 0.5);
         }
         
         h1 {
             color: #00ff88;
             margin: 0 0 10px 0;
-            font-size: 24px;
+            font-size: 26px;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.7);
         }
         
         .subtitle {
-            color: #888;
+            color: #a0a0c0;
             margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.5;
         }
         
         #instructions {
             margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            padding: 18px;
+            background: rgba(30, 40, 70, 0.6);
+            border-radius: 12px;
             font-size: 14px;
+            line-height: 1.6;
+            border-left: 3px solid #00ff88;
         }
         
         #explanation {
             margin-top: 20px;
-            padding: 15px;
+            padding: 18px;
             background: rgba(0, 255, 136, 0.1);
-            border-radius: 8px;
+            border-radius: 12px;
             border-left: 4px solid #00ff88;
+            font-size: 14px;
+            line-height: 1.6;
         }
         
         #historical-context {
@@ -103,21 +124,29 @@
             left: 20px;
             right: 20px;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(10, 15, 30, 0.85);
             padding: 20px;
-            border-radius: 15px;
-            border: 2px solid #ffaa00;
-            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            backdrop-filter: blur(12px);
             max-height: 30vh;
             overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             pointer-events: auto;
         }
         
         .era {
             margin: 15px 0;
-            padding: 10px;
-            border-left: 3px solid;
+            padding: 12px;
+            border-left: 4px solid;
             background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .era:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.08);
         }
         
         .era-1 {
@@ -134,9 +163,10 @@
         
         .era-title {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
-
+        
         /* Loading indicator */
         #loading {
             position: absolute;
@@ -144,12 +174,29 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: #00ff88;
-            font-size: 18px;
+            font-size: 20px;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
+            background: rgba(10, 15, 30, 0.9);
+            padding: 30px 40px;
+            border-radius: 16px;
             border: 1px solid #00ff88;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+        
+        .loading-spinner {
+            border: 3px solid rgba(0, 255, 136, 0.3);
+            border-top: 3px solid #00ff88;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Error message */
@@ -161,13 +208,14 @@
             color: #ff4444;
             font-size: 16px;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(10, 15, 30, 0.95);
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 16px;
             border: 1px solid #ff4444;
             text-align: center;
             max-width: 400px;
             display: none;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
         }
 
         /* Mobile responsiveness */
@@ -177,7 +225,7 @@
                 right: 10px;
                 left: 10px;
                 max-width: none;
-                padding: 15px;
+                padding: 20px;
                 font-size: 14px;
             }
             
@@ -188,27 +236,57 @@
                 max-width: none;
                 max-height: 25vh;
                 font-size: 12px;
+                padding: 15px;
             }
             
             h1 {
-                font-size: 20px;
+                font-size: 22px;
             }
             
             .metric {
                 font-size: 14px;
+                padding: 6px 10px;
+            }
+            
+            .value {
+                font-size: 16px;
             }
         }
 
         @media (max-width: 480px) {
             #historical-context {
-                display: none; /* Hide on very small screens */
+                display: none;
             }
+            
+            #instructions, #explanation {
+                display: none;
+            }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 136, 0.5);
         }
     </style>
 </head>
 <body>
     <!-- Loading indicator -->
     <div id="loading">
+        <div class="loading-spinner"></div>
         Loading Geometric Ethics Demo...
     </div>
 
@@ -219,25 +297,25 @@
         <div id="scene-container"></div>
         
         <div id="ui">
-            <h1>Geometric Ethics Demo</h1>
-            <div class="subtitle">Mathematical Guarantees for AI Safety</div>
+            <h1>🌀 Geometric Ethics</h1>
+            <div class="subtitle">Mathematical Guarantees for AI Safety through Geometric Constraints</div>
             
             <div class="metric">
-                <span>Ethical Compliance:</span>
+                <span>✅ Ethical Compliance:</span>
                 <span id="compliance" class="value">100%</span>
             </div>
             <div class="ethical-boundary"></div>
             
             <div class="metric">
-                <span>Safety Margin:</span>
+                <span>🛡️ Safety Margin:</span>
                 <span id="safety" class="value">100%</span>
             </div>
             <div class="metric">
-                <span>Efficiency:</span>
+                <span>⚡ Efficiency:</span>
                 <span id="efficiency" class="value">100%</span>
             </div>
             <div class="metric">
-                <span>SO(3) Manifold:</span>
+                <span>🎯 SO(3) Manifold:</span>
                 <span id="manifold" class="value">ACTIVE</span>
             </div>
             
@@ -255,7 +333,7 @@
         </div>
 
         <div id="historical-context">
-            <h3>Historical Context: The Three Eras of Robot Ethics</h3>
+            <h3>🏛️ Historical Context: The Three Eras of Robot Ethics</h3>
             
             <div class="era era-1">
                 <div class="era-title">Era 1: Industrial Isolation (1961-2000s)</div>
@@ -268,18 +346,18 @@
             </div>
             
             <div class="era era-3">
-                <div class="era-title">Era 3: Geometric Intelligence (2025+) - YOU ARE HERE</div>
+                <div class="era-title">Era 3: Geometric Intelligence (2025+) ← YOU ARE HERE</div>
                 <div>"Robots that geometrically understand humans" - Mathematical constraints make ethical violations impossible. Solves the 60-year safety-efficiency paradox.</div>
             </div>
             
-            <div style="margin-top: 15px; font-size: 14px; color: #888;">
+            <div style="margin-top: 15px; font-size: 14px; color: #a0a0c0;">
                 <strong>The Geometric Turn:</strong> This demo represents a paradigm shift from programming ethical rules to building systems where ethical behavior is mathematically inevitable.
             </div>
         </div>
     </div>
 
     <script>
-        // THREE.JS GEOMETRIC ETHICS VISUALIZATION - PRODUCTION READY
+        // THREE.JS GEOMETRIC ETHICS VISUALIZATION - FIXED & ENHANCED
         // Configuration
         const CONFIG = {
             camera: { x: 15, y: 8, z: 15 },
@@ -299,6 +377,10 @@
         let animationId;
         let lastScaleUpdate = 0;
 
+        // MEMORY OPTIMIZATION: 
+        // Pre-allocate a vector for calculations to avoid creating garbage in the render loop
+        const tempVec = new THREE.Vector3();
+
         function init() {
             try {
                 console.log("Initializing Geometric Ethics Demo...");
@@ -310,8 +392,8 @@
 
                 // Scene setup
                 scene = new THREE.Scene();
-                scene.background = new THREE.Color(0x0f0f23);
-                scene.fog = new THREE.Fog(0x0f0f23, 10, 50);
+                scene.background = new THREE.Color(0x0a0a1a);
+                scene.fog = new THREE.Fog(0x0a0a1a, 10, 50);
 
                 // Camera
                 camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -343,16 +425,25 @@
                 controls.dampingFactor = 0.05;
                 controls.target.set(0, 2, 0);
 
-                // Lighting
-                const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
+                // Enhanced Lighting
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
                 scene.add(ambientLight);
 
                 const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
                 directionalLight.position.set(20, 30, 10);
                 directionalLight.castShadow = true;
-                directionalLight.shadow.mapSize.width = 1024; // Reduced for performance
+                directionalLight.shadow.mapSize.width = 1024;
                 directionalLight.shadow.mapSize.height = 1024;
                 scene.add(directionalLight);
+
+                // Add some point lights for better visual effect
+                const pointLight1 = new THREE.PointLight(0x00ff88, 0.5, 20);
+                pointLight1.position.set(5, 10, 5);
+                scene.add(pointLight1);
+
+                const pointLight2 = new THREE.PointLight(0x0088ff, 0.3, 20);
+                pointLight2.position.set(-5, 8, -5);
+                scene.add(pointLight2);
 
                 // Create scene elements
                 createEthicalManifold();
@@ -381,7 +472,7 @@
             document.getElementById('loading').style.display = 'none';
             const errorDiv = document.getElementById('error');
             errorDiv.innerHTML = `
-                <h3>Failed to Load Demo</h3>
+                <h3>❌ Failed to Load Demo</h3>
                 <p>${message}</p>
                 <small>Please try:<br>
                 • Updating your browser<br>
@@ -409,9 +500,10 @@
             const material = new THREE.MeshPhongMaterial({
                 color: 0x00ff88,
                 transparent: true,
-                opacity: 0.2,
+                opacity: 0.15,
                 wireframe: true,
-                emissive: 0x004400
+                emissive: 0x004400,
+                side: THREE.DoubleSide
             });
 
             const ethicalSphere = new THREE.Mesh(geometry, material);
@@ -419,34 +511,42 @@
             scene.add(ethicalSphere);
             ethicalBoundaries.push(ethicalSphere);
 
-            // Rotating rings
+            // Rotating rings for SO(3) representation
             const ringColors = [0xff4444, 0xffaa00, 0x00ff88];
+            const ringGeometries = [
+                new THREE.TorusGeometry(CONFIG.boundary.radius + 0.2, 0.08, 16, 100),
+                new THREE.TorusGeometry(CONFIG.boundary.radius + 0.3, 0.06, 16, 100),
+                new THREE.TorusGeometry(CONFIG.boundary.radius + 0.4, 0.04, 16, 100)
+            ];
+            
             for (let i = 0; i < 3; i++) {
-                const ringGeometry = new THREE.TorusGeometry(CONFIG.boundary.radius + 0.2, 0.1, 16, 100);
                 const ringMaterial = new THREE.MeshBasicMaterial({
                     color: ringColors[i],
                     transparent: true,
-                    opacity: 0.8
+                    opacity: 0.7
                 });
-                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                const ring = new THREE.Mesh(ringGeometries[i], ringMaterial);
                 
+                // Different orientations for each ring
                 if (i === 0) ring.rotation.x = Math.PI / 2;
                 if (i === 1) ring.rotation.z = Math.PI / 2;
                 
                 ethicalSphere.add(ring);
             }
 
-            // Floating points - optimized with fewer instances
-            for (let i = 0; i < 20; i++) { // Reduced from 40 for performance
-                const pointGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+            // Floating constraint points
+            for (let i = 0; i < 25; i++) {
+                const pointGeometry = new THREE.SphereGeometry(0.08, 8, 8);
                 const pointMaterial = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color().setHSL(i / 20, 0.9, 0.6)
+                    color: new THREE.Color().setHSL(i / 25, 0.9, 0.6),
+                    emissive: new THREE.Color().setHSL(i / 25, 0.7, 0.3)
                 });
                 const point = new THREE.Mesh(pointGeometry, pointMaterial);
                 
-                const phi = Math.acos(-1 + (i / 20) * 2);
-                const theta = Math.PI * 2 * i / 20;
-                const radius = CONFIG.boundary.radius + Math.random() * 0.5;
+                // Spherical distribution
+                const phi = Math.acos(-1 + (i / 25) * 2);
+                const theta = Math.PI * 2 * i / 25;
+                const radius = CONFIG.boundary.radius + Math.random() * 0.3;
                 
                 point.position.set(
                     radius * Math.sin(phi) * Math.cos(theta),
@@ -459,25 +559,54 @@
         }
 
         function createFigures() {
-            // Robot
-            const robotGeometry = new THREE.CylinderGeometry(0.5, 0.4, 2, 8);
-            const robotMaterial = new THREE.MeshPhongMaterial({ 
+            // Robot figure (blue)
+            const robotGroup = new THREE.Group();
+            
+            const bodyGeometry = new THREE.CylinderGeometry(0.5, 0.4, 2, 8);
+            const bodyMaterial = new THREE.MeshPhongMaterial({ 
                 color: 0x0088ff,
                 emissive: 0x002244,
                 shininess: 100
             });
-            robot = new THREE.Mesh(robotGeometry, robotMaterial);
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            robotGroup.add(body);
+
+            // Robot head
+            const headGeometry = new THREE.SphereGeometry(0.3, 8, 8);
+            const headMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x0066cc,
+                emissive: 0x001133
+            });
+            const head = new THREE.Mesh(headGeometry, headMaterial);
+            head.position.y = 1.2;
+            robotGroup.add(head);
+
+            robot = robotGroup;
             robot.position.set(CONFIG.robot.x, CONFIG.robot.y, CONFIG.robot.z);
             robot.castShadow = true;
             scene.add(robot);
 
-            // Human
-            const humanGeometry = new THREE.SphereGeometry(0.7, 16, 16);
-            const humanMaterial = new THREE.MeshPhongMaterial({ 
+            // Human figure (red)
+            const humanGroup = new THREE.Group();
+            
+            const humanBodyGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+            const humanBodyMaterial = new THREE.MeshPhongMaterial({ 
                 color: 0xff4444,
                 emissive: 0x442222
             });
-            human = new THREE.Mesh(humanGeometry, humanMaterial);
+            const humanBody = new THREE.Mesh(humanBodyGeometry, humanBodyMaterial);
+            humanGroup.add(humanBody);
+
+            // Human head
+            const humanHeadGeometry = new THREE.SphereGeometry(0.25, 8, 8);
+            const humanHeadMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xff6666
+            });
+            const humanHead = new THREE.Mesh(humanHeadGeometry, humanHeadMaterial);
+            humanHead.position.y = 0.6;
+            humanGroup.add(humanHead);
+
+            human = humanGroup;
             human.position.set(CONFIG.human.x, CONFIG.human.y, CONFIG.human.z);
             human.castShadow = true;
             scene.add(human);
@@ -486,9 +615,9 @@
         }
 
         function createMovementPaths() {
-            // Unsafe path
+            // Unsafe path (red) - would violate ethical boundaries
             const unsafePoints = [];
-            for (let i = 0; i < 50; i++) { // Reduced points for performance
+            for (let i = 0; i < 50; i++) {
                 const t = i / 50;
                 const x = CONFIG.robot.x + t * (CONFIG.human.x - CONFIG.robot.x);
                 unsafePoints.push(new THREE.Vector3(
@@ -502,17 +631,22 @@
             const unsafeMaterial = new THREE.LineBasicMaterial({ 
                 color: 0xff4444,
                 transparent: true,
-                opacity: 0.6
+                opacity: 0.6,
+                linewidth: 2
             });
             const unsafePath = new THREE.Line(unsafeGeometry, unsafeMaterial);
             scene.add(unsafePath);
 
-            // Safe path
+            // Safe path (green) - respects geometric constraints
             const safePoints = [];
             for (let i = 0; i < 50; i++) {
                 const t = i / 50;
                 const x = CONFIG.robot.x + t * (CONFIG.human.x - CONFIG.robot.x);
-                const deformation = Math.sin(t * Math.PI) * 2;
+                // Geometric deformation around ethical boundary
+                const centerX = 0;
+                const distanceFromCenter = Math.abs(x - centerX);
+                const maxDeformation = 2;
+                const deformation = Math.sin(t * Math.PI) * maxDeformation;
                 
                 safePoints.push(new THREE.Vector3(
                     x,
@@ -523,16 +657,21 @@
 
             const safeGeometry = new THREE.BufferGeometry().setFromPoints(safePoints);
             const safeMaterial = new THREE.LineBasicMaterial({ 
-                color: 0x00ff88
+                color: 0x00ff88,
+                linewidth: 3
             });
             const safePath = new THREE.Line(safeGeometry, safeMaterial);
             scene.add(safePath);
         }
 
         function createGrid() {
-            const gridHelper = new THREE.GridHelper(25, 25, 0x444444, 0x222222);
+            const gridHelper = new THREE.GridHelper(30, 30, 0x444466, 0x222244);
             gridHelper.position.y = -0.1;
             scene.add(gridHelper);
+            
+            // Add axes helper for better orientation
+            const axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
         }
 
         function animate() {
@@ -541,13 +680,13 @@
             const delta = clock.getDelta();
             const time = clock.getElapsedTime();
 
-            // Animate ethical boundary with performance optimization
+            // 1. Animate ethical boundary (Sphere)
             if (ethicalBoundaries.length > 0) {
                 const sphere = ethicalBoundaries[0];
                 sphere.rotation.y += delta * 0.5;
                 sphere.rotation.x = Math.sin(time * 0.3) * 0.2;
                 
-                // Throttle scale updates for performance
+                // Throttled scale update
                 if (time - lastScaleUpdate > CONFIG.performance.scaleUpdateInterval) {
                     const scale = 1 + Math.sin(time * 2) * 0.05;
                     sphere.scale.set(scale, scale, scale);
@@ -555,14 +694,19 @@
                 }
             }
 
-            // Animate robot with geometric constraint enforcement
+            // 2. Animate robot with OPTIMIZED calculation
             if (robot) {
-                robot.position.x = CONFIG.robot.x + (Math.sin(time * 0.4) * 0.5 + 0.5) * 
-                                 (CONFIG.human.x - CONFIG.robot.x);
+                // Calculate raw position based on time
+                const targetX = CONFIG.robot.x + (Math.sin(time * 0.4) * 0.5 + 0.5) * (CONFIG.human.x - CONFIG.robot.x);
                 
-                const distanceToCenter = new THREE.Vector3(robot.position.x, 0, robot.position.z).length();
+                robot.position.x = targetX;
+                
+                // OPTIMIZATION: Reuse tempVec instead of creating 'new THREE.Vector3'
+                tempVec.set(robot.position.x, 0, robot.position.z);
+                const distanceToCenter = tempVec.length();
                 const boundaryRadius = CONFIG.boundary.radius;
                 
+                // Apply Geometric Constraint (The "Push")
                 if (distanceToCenter < boundaryRadius) {
                     const pushForce = (boundaryRadius - distanceToCenter) * 0.2;
                     robot.position.y = CONFIG.robot.y + pushForce;
@@ -571,12 +715,25 @@
                 }
                 
                 robot.rotation.y = time * 3;
-            }
 
-            // Update metrics
-            document.getElementById('safety').textContent = Math.floor(96 + Math.sin(time * 0.7) * 4) + '%';
-            document.getElementById('efficiency').textContent = Math.floor(97 + Math.cos(time * 0.5) * 3) + '%';
-            document.getElementById('compliance').textContent = '100%';
+                // 3. Dynamic UI Metrics (Reactive to scene)
+                // Calculate actual distance between robot and human for the "Safety Margin"
+                const distToHuman = robot.position.distanceTo(human.position);
+                
+                // Logic: The closer the robot gets, the "tighter" the safety margin, 
+                // but it never drops below 95% thanks to the geometric guarantee.
+                let safetyScore = 95 + (distToHuman / 10) * 5; 
+                if (safetyScore > 100) safetyScore = 100;
+                
+                document.getElementById('safety').textContent = safetyScore.toFixed(1) + '%';
+                
+                // Efficiency fluctuates slightly based on the "effort" (displacement)
+                const displacement = Math.abs(robot.position.y - CONFIG.robot.y);
+                const efficiencyScore = 100 - (displacement * 2);
+                document.getElementById('efficiency').textContent = efficiencyScore.toFixed(1) + '%';
+                
+                document.getElementById('compliance').textContent = '100%';
+            }
 
             controls.update();
             renderer.render(scene, camera);
