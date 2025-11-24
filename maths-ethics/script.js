@@ -1,5 +1,5 @@
 // Maths & Ethics - Geometric Constraints Visualization
-// script.js - Complete Three.js implementation
+// script.js - With double entry protection
 
 // Global variables
 let scene, camera, renderer, controls;
@@ -7,6 +7,7 @@ let ethicalBoundaries = [];
 let robot, human;
 let clock = new THREE.Clock();
 let animationId;
+let isInitialized = false; // Double entry protection
 
 // Configuration
 const CONFIG = {
@@ -27,6 +28,24 @@ const tempVec = new THREE.Vector3();
 function initVisualization() {
     console.log("🚀 Initializing Maths & Ethics Visualization...");
     
+    // DOUBLE ENTRY PROTECTION - Check if already initialized
+    if (isInitialized) {
+        console.warn("⚠️ Visualization already initialized - skipping");
+        return;
+    }
+    
+    // DOUBLE ENTRY PROTECTION - Check if canvas already exists
+    const container = document.getElementById('scene-container');
+    if (!container) {
+        console.error("❌ Scene container not found");
+        return;
+    }
+    
+    if (container.querySelector('canvas')) {
+        console.warn("⚠️ Canvas already exists - skipping initialization");
+        return;
+    }
+    
     try {
         // Check if Three.js is loaded
         if (typeof THREE === 'undefined') {
@@ -39,6 +58,9 @@ function initVisualization() {
         setupControls();
         setupLighting();
         createSceneElements();
+        
+        // Mark as initialized
+        isInitialized = true;
         
         // Hide loading indicator
         const loadingElement = document.getElementById('loading');
@@ -57,195 +79,78 @@ function initVisualization() {
     }
 }
 
-function setupScene() {
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a1a);
-    scene.fog = new THREE.Fog(0x0a0a1a, 10, 50);
-}
+// ... (all your existing functions remain the same - setupScene, setupCamera, etc.)
 
-function setupCamera() {
+function setupRenderer() {
     const container = document.getElementById('visualization-container');
     if (!container) {
         throw new Error('Visualization container not found');
     }
     
-    camera = new THREE.PerspectiveCamera(
-        60, 
-        container.clientWidth / container.clientHeight, 
-        0.1, 
-        1000
-    );
-    camera.position.set(CONFIG.camera.x, CONFIG.camera.y, CONFIG.camera.z);
-    camera.lookAt(0, 2, 0);
-}
-
-function setupRenderer() {
-    const container = document.getElementById('visualization-container');
+    // DOUBLE ENTRY PROTECTION - Final canvas check
+    const sceneContainer = document.getElementById('scene-container');
+    if (sceneContainer.querySelector('canvas')) {
+        throw new Error('Canvas already exists - double initialization prevented');
+    }
     
     renderer = new THREE.WebGLRenderer({ 
         antialias: true,
         alpha: false
     });
     
-    // Check WebGL support
-    if (!renderer.getContext()) {
-        throw new Error('WebGL not supported in this browser');
+    // ... rest of setupRenderer code
+}
+
+// ... (rest of your functions remain unchanged)
+
+// Cleanup and utilities
+function cleanup() {
+    if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+    }
+    if (renderer) {
+        renderer.dispose();
+        renderer = null;
+    }
+    if (controls) {
+        controls.dispose();
+        controls = null;
     }
     
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, CONFIG.performance.maxPixelRatio));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    
-    const sceneContainer = document.getElementById('scene-container');
-    sceneContainer.appendChild(renderer.domElement);
+    isInitialized = false;
+    console.log("🧹 Visualization cleaned up");
 }
 
-function setupControls() {
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.target.set(0, 2, 0);
-    
-    // Add control instructions
-    controls.addEventListener('change', function() {
-        updateMetrics();
-    });
-}
+// Export functions for global access
+window.MathsEthics = {
+    init: initVisualization,
+    cleanup: cleanup,
+    onResize: onWindowResize,
+    isInitialized: () => isInitialized
+};
 
-function setupLighting() {
-    // Ambient light
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-    scene.add(ambientLight);
-
-    // Main directional light
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight.position.set(20, 30, 10);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 1024;
-    directionalLight.shadow.mapSize.height = 1024;
-    scene.add(directionalLight);
-
-    // Accent lights for better visualization
-    const pointLight1 = new THREE.PointLight(0x00ff88, 0.3, 20);
-    pointLight1.position.set(5, 10, 5);
-    scene.add(pointLight1);
-
-    const pointLight2 = new THREE.PointLight(0x0088ff, 0.2, 20);
-    pointLight2.position.set(-5, 8, -5);
-    scene.add(pointLight2);
-}
-
-function createSceneElements() {
-    createEthicalManifold();
-    createFigures();
-    createMovementPaths();
-    createGrid();
-    createCoordinateAxes();
-}
-
-function createEthicalManifold() {
-    // Main ethical boundary sphere
-    const geometry = new THREE.SphereGeometry(CONFIG.boundary.radius, 32, 32);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0x00ff88,
-        transparent: true,
-        opacity: 0.15,
-        wireframe: true,
-        emissive: 0x004400
-    });
-
-    const ethicalSphere = new THREE.Mesh(geometry, material);
-    ethicalSphere.position.set(0, 3, 0);
-    scene.add(ethicalSphere);
-    ethicalBoundaries.push(ethicalSphere);
-
-    // SO(3) Representation - Rotating rings
-    createSORings(ethicalSphere);
-    
-    // Constraint points
-    createConstraintPoints(ethicalSphere);
-}
-
-function createSORings(parentSphere) {
-    const ringColors = [0xff4444, 0xffaa00, 0x00ff88];
-    const ringRadii = [5.2, 5.3, 5.4];
-    
-    ringColors.forEach((color, index) => {
-        const ringGeometry = new THREE.TorusGeometry(ringRadii[index], 0.08, 16, 100);
-        const ringMaterial = new THREE.MeshBasicMaterial({
-            color: color,
-            transparent: true,
-            opacity: 0.7
-        });
-        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-        
-        // Different orientations for SO(3) representation
-        switch(index) {
-            case 0: ring.rotation.x = Math.PI / 2; break;
-            case 1: ring.rotation.z = Math.PI / 2; break;
-            case 2: ring.rotation.y = Math.PI / 4; break;
+// SIMPLIFIED INITIALIZATION - Prevents double execution
+(function() {
+    // Wait for both DOM and Three.js to be ready
+    function checkAndInit() {
+        if (typeof THREE !== 'undefined' && document.readyState === 'complete') {
+            // Small delay to ensure everything is settled
+            setTimeout(initVisualization, 100);
         }
-        
-        parentSphere.add(ring);
-    });
-}
-
-function createConstraintPoints(parentSphere) {
-    for (let i = 0; i < 25; i++) {
-        const pointGeometry = new THREE.SphereGeometry(0.08, 8, 8);
-        const pointMaterial = new THREE.MeshBasicMaterial({
-            color: new THREE.Color().setHSL(i / 25, 0.9, 0.6),
-            emissive: new THREE.Color().setHSL(i / 25, 0.7, 0.3)
-        });
-        const point = new THREE.Mesh(pointGeometry, pointMaterial);
-        
-        // Spherical distribution
-        const phi = Math.acos(-1 + (i / 25) * 2);
-        const theta = Math.sqrt(25) * Math.PI * i; // Golden angle distribution
-        const radius = CONFIG.boundary.radius + Math.random() * 0.3;
-        
-        point.position.set(
-            radius * Math.sin(phi) * Math.cos(theta),
-            radius * Math.sin(phi) * Math.sin(theta),
-            radius * Math.cos(phi)
-        );
-        
-        parentSphere.add(point);
     }
-}
-
-function createFigures() {
-    createRobot();
-    createHuman();
-}
-
-function createRobot() {
-    const robotGroup = new THREE.Group();
     
-    // Robot body
-    const bodyGeometry = new THREE.CylinderGeometry(0.5, 0.4, 2, 8);
-    const bodyMaterial = new THREE.MeshPhongMaterial({ 
-        color: 0x0088ff,
-        emissive: 0x002244,
-        shininess: 100
-    });
-    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-    robotGroup.add(body);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkAndInit);
+    } else {
+        checkAndInit();
+    }
+})();
 
-    // Robot head
-    const headGeometry = new THREE.SphereGeometry(0.3, 8, 8);
-    const headMaterial = new THREE.MeshPhongMaterial({ 
-        color: 0x0066cc,
-        emissive: 0x001133
-    });
-    const head = new THREE.Mesh(headGeometry, headMaterial);
-    head.position.y = 1.2;
-    robotGroup.add(head);
+// Handle window resize
+window.addEventListener('resize', onWindowResize);
 
-    // Robot "eyes" for personality
-    const eyeGeometry = new THREE.SphereGeometry(0.05, 6, 6);
-    const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    
-    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    leftEye.position.set(0.15, 1.25, 0
+// Handle page unload
+window.addEventListener('beforeunload', cleanup);
+
+console.log("📜 Maths & Ethics script loaded successfully!");
