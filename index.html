@@ -99,7 +99,7 @@
     </div>
 
     <script>
-        // THREE.JS GEOMETRIC ETHICS VISUALIZATION
+        // THREE.JS GEOMETRIC ETHICS VISUALIZATION - PERFECTLY POSITIONED
         let scene, camera, renderer, controls;
         let ethicalBoundaries = [];
         let robot, human;
@@ -114,10 +114,10 @@
             scene.background = new THREE.Color(0x0f0f23);
             scene.fog = new THREE.Fog(0x0f0f23, 10, 50);
 
-            // Camera
+            // Camera - perfect starting view
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(15, 10, 15);
-            camera.lookAt(0, 0, 0);
+            camera.position.set(12, 8, 12);
+            camera.lookAt(0, 2, 0);
 
             // Renderer
             renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('scene'), antialias: true });
@@ -137,42 +137,43 @@
             directionalLight.castShadow = true;
             scene.add(directionalLight);
 
-            // Create ethical boundary manifold (SO(3) inspired)
+            // Create ethical boundary manifold - PERFECTLY POSITIONED
             createEthicalManifold();
 
-            // Create robot and human figures
+            // Create robot and human figures - PERFECTLY POSITIONED
             createFigures();
 
             // Create grid floor
-            const gridHelper = new THREE.GridHelper(30, 30, 0x444444, 0x222222);
+            const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
+            gridHelper.position.y = -0.1;
             scene.add(gridHelper);
 
             window.addEventListener('resize', onWindowResize);
         }
 
         function createEthicalManifold() {
-            // Create a beautiful ethical boundary manifold
-            const geometry = new THREE.SphereGeometry(8, 32, 32);
+            // PERFECT POSITION: Center stage, eye level
+            const geometry = new THREE.SphereGeometry(5, 32, 32);
             const material = new THREE.MeshPhongMaterial({
                 color: 0x00ff88,
                 transparent: true,
-                opacity: 0.2,
+                opacity: 0.15,
                 wireframe: true,
                 emissive: 0x004400
             });
 
             const ethicalSphere = new THREE.Mesh(geometry, material);
-            ethicalSphere.position.y = 4;
+            ethicalSphere.position.set(0, 3, 0);  // PERFECT: Centered, visible height
             scene.add(ethicalSphere);
             ethicalBoundaries.push(ethicalSphere);
 
             // Add rotating rings to represent SO(3) rotations
             for (let i = 0; i < 3; i++) {
-                const ringGeometry = new THREE.TorusGeometry(8.5, 0.1, 16, 100);
+                const ringGeometry = new THREE.TorusGeometry(5.2, 0.08, 16, 100);
                 const ringMaterial = new THREE.MeshBasicMaterial({
                     color: [0xff4444, 0xffaa00, 0x00ff88][i],
                     transparent: true,
-                    opacity: 0.6
+                    opacity: 0.7
                 });
                 const ring = new THREE.Mesh(ringGeometry, ringMaterial);
                 
@@ -184,8 +185,8 @@
             }
 
             // Add floating ethical constraint points
-            for (let i = 0; i < 50; i++) {
-                const pointGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+            for (let i = 0; i < 30; i++) {
+                const pointGeometry = new THREE.SphereGeometry(0.08, 6, 6);
                 const pointMaterial = new THREE.MeshBasicMaterial({
                     color: new THREE.Color().setHSL(Math.random(), 0.8, 0.6)
                 });
@@ -194,7 +195,7 @@
                 // Random position on sphere surface
                 const phi = Math.acos(-1 + Math.random() * 2);
                 const theta = Math.random() * Math.PI * 2;
-                const radius = 8 + Math.random() * 0.5;
+                const radius = 5 + Math.random() * 0.3;
                 
                 point.position.set(
                     radius * Math.sin(phi) * Math.cos(theta),
@@ -207,25 +208,25 @@
         }
 
         function createFigures() {
-            // Create robot figure (simple geometry)
-            const robotGeometry = new THREE.CylinderGeometry(0.5, 0.3, 2, 8);
+            // PERFECT POSITION: Robot on left, human on right
+            const robotGeometry = new THREE.CylinderGeometry(0.4, 0.3, 1.5, 8);
             const robotMaterial = new THREE.MeshPhongMaterial({ 
                 color: 0x0088ff,
                 emissive: 0x002244
             });
             robot = new THREE.Mesh(robotGeometry, robotMaterial);
-            robot.position.set(-5, 1, 0);
+            robot.position.set(-6, 0.75, 0);  // PERFECT: Left side, ground level
             robot.castShadow = true;
             scene.add(robot);
 
-            // Create human figure
-            const humanGeometry = new THREE.SphereGeometry(0.8, 16, 16);
+            // Human figure - PERFECT POSITION
+            const humanGeometry = new THREE.SphereGeometry(0.6, 12, 12);
             const humanMaterial = new THREE.MeshPhongMaterial({ 
                 color: 0xff4444,
                 emissive: 0x442222
             });
             human = new THREE.Mesh(humanGeometry, humanMaterial);
-            human.position.set(5, 0.8, 0);
+            human.position.set(6, 0.6, 0);  // PERFECT: Right side, ground level
             human.castShadow = true;
             scene.add(human);
 
@@ -238,9 +239,9 @@
             const pathPoints = [];
             for (let i = 0; i < 50; i++) {
                 pathPoints.push(new THREE.Vector3(
-                    -5 + (i / 50) * 10,
-                    0.5,
-                    Math.sin(i / 50 * Math.PI * 2) * 3
+                    -6 + (i / 50) * 12,
+                    0.2,
+                    Math.sin(i / 50 * Math.PI * 2) * 2
                 ));
             }
 
@@ -257,12 +258,12 @@
             const safePathPoints = [];
             for (let i = 0; i < 50; i++) {
                 const t = i / 50;
-                const x = -5 + t * 10;
+                const x = -6 + t * 12;
                 // Path deforms around ethical boundary
-                const deformation = Math.sin(t * Math.PI) * 2;
+                const deformation = Math.sin(t * Math.PI) * 1.5;
                 safePathPoints.push(new THREE.Vector3(
                     x,
-                    0.5,
+                    0.2,
                     deformation
                 ));
             }
@@ -284,20 +285,22 @@
 
             // Animate ethical boundary manifold
             if (ethicalBoundaries.length > 0) {
-                ethicalBoundaries[0].rotation.y += delta * 0.5;
-                ethicalBoundaries[0].rotation.x = Math.sin(time * 0.3) * 0.2;
+                ethicalBoundaries[0].rotation.y += delta * 0.3;
+                ethicalBoundaries[0].rotation.x = Math.sin(time * 0.2) * 0.1;
             }
 
             // Animate robot with geometric constraints
             if (robot) {
-                robot.position.x = -5 + (Math.sin(time * 0.5) * 0.5 + 0.5) * 8;
+                robot.position.x = -6 + (Math.sin(time * 0.3) * 0.5 + 0.5) * 10;
                 // Robot automatically avoids ethical boundary
-                const distanceToCenter = robot.position.length();
-                if (distanceToCenter < 8) {
-                    const pushForce = (8 - distanceToCenter) * 0.1;
-                    robot.position.y += pushForce;
+                const distanceToCenter = new THREE.Vector3(robot.position.x, 0, robot.position.z).length();
+                if (distanceToCenter < 5) {
+                    const pushForce = (5 - distanceToCenter) * 0.1;
+                    robot.position.y = 0.75 + pushForce;
+                } else {
+                    robot.position.y = 0.75;
                 }
-                robot.rotation.y = time;
+                robot.rotation.y = time * 2;
             }
 
             // Update real-time metrics with some variation to show it's live
